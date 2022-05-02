@@ -224,8 +224,9 @@ public class Family extends AppCompatActivity {
         public void run() {
             while (threadActive){
                 try{
-                    //要设置锁避免死锁
+                    //与ListFragment中的线程冲突，要设置锁避免死锁
                     String msg = (String) objectInputStream.readObject();
+
                     if(msg.equals("StartVideo")){
                         System.out.println("收到视频通话邀请");
                         String channel = (String)objectInputStream.readObject();
