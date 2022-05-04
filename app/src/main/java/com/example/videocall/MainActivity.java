@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -340,12 +341,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    OutputStream out = socket.getOutputStream();
-                    out.write("EndVideo\n".getBytes());
+                    ObjectOutputStream objectOutputStream = appTool.getObjectOutputStream();
+                    objectOutputStream.writeObject("EndVideo");
 
-                    Socket DBServerSocket = appTool.getSocket();
-                    OutputStream DBServerOut = DBServerSocket.getOutputStream();
-                    DBServerOut.write("EndCall\n".getBytes());
+                    objectOutputStream.writeObject("EndCall");
                     System.out.println("结束通话");
                     Family.threadActive = true;
                     startActivity(new Intent(MainActivity.this,Family.class));

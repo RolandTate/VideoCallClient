@@ -130,32 +130,11 @@ public class ListFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    if(Family.streamLock.tryLock(800, TimeUnit.MICROSECONDS)) {
-                        System.out.println("已取得锁");
                         Family.objectOutputStream.writeObject("StartCall");
                         System.out.println("向服务器请求视频通话");
                         Family.objectOutputStream.writeObject(ID);
 
-                        //与Family中的线程冲突
-                        String result = (String) Family.objectInputStream.readObject();
-
-                        System.out.println(result);
-                        if (result.equals("StartSuccess")) {
-                            String channel = (String) Family.objectInputStream.readObject();
-                            appTool.setChannel(channel);
-                            System.out.println("邀请成功, channel为 :" + channel);
-                            Family.streamLock.unlock();
-                            System.out.println("已释放锁");
-                            startActivity(new Intent(getActivity(), MainActivity.class));
-                        }
-                        else {
-                            System.out.println("邀请失败！" );
-                            Family.streamLock.unlock();
-                            System.out.println("已释放锁");
-                        }
-                    }
                 }catch (Exception e){
-                    Family.streamLock.unlock();
                     System.out.println("已释放锁");
                     e.printStackTrace();
                 }

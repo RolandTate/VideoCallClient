@@ -70,6 +70,7 @@ public class Family extends AppCompatActivity {
                 case 1:
                     startCall();
                     break;
+                case 2:
 
             }
             super.handleMessage(msg);
@@ -219,7 +220,7 @@ public class Family extends AppCompatActivity {
     }
 
     public class ListenThread extends Thread{
-
+        //尝试使用这个线程倾听所有服务器传来的消息，然后利用handler来响应
         @Override
         public void run() {
             while (threadActive){
@@ -235,6 +236,16 @@ public class Family extends AppCompatActivity {
                         Message handlerMessage = new Message();
                         handlerMessage.what = 1;
                         familyHandler.sendMessage(handlerMessage);
+                    }
+                    if (msg.equals("StartSuccess")) {
+                        String channel = (String) Family.objectInputStream.readObject();
+                        appTool.setChannel(channel);
+                        System.out.println("邀请成功, channel为 :" + channel);
+
+                        Message handlerMessage = new Message();
+                        handlerMessage.what = 1;
+                        familyHandler.sendMessage(handlerMessage);
+                        startActivity(new Intent(Family.this, MainActivity.class));
                     }
                 }catch (Exception e){
                     e.printStackTrace();
