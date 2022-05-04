@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     socket = new Socket();
                     //ipconfig获得到的地址
-                    //SocketAddress socAddress = new InetSocketAddress("192.168.168.102", 8922);
+                    //SocketAddress socAddress = new InetSocketAddress("192.168.168.100", 8922);
                     SocketAddress socAddress = new InetSocketAddress("118.31.54.155", 8922);
                     try {
                         socket.connect(socAddress, 1000);
@@ -346,7 +346,6 @@ public class MainActivity extends AppCompatActivity {
 
                     objectOutputStream.writeObject("EndCall");
                     System.out.println("结束通话");
-                    Family.threadActive = true;
                     startActivity(new Intent(MainActivity.this,Family.class));
                 }catch (Exception e){
                     e.printStackTrace();

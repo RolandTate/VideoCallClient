@@ -93,7 +93,7 @@ public class Family extends AppCompatActivity {
 
         iv_first.setImageResource(R.drawable.main_tab_friends_selected);//选中已开启设备列表
 
-        listenToServer();
+        //listenToServer();
 
     }
 
@@ -126,7 +126,7 @@ public class Family extends AppCompatActivity {
         listenThread = new ListenThread();
     }
 
-    private void listenToServer(){
+    private void    listenToServer(){
         listenThread.start();
     }
 
@@ -255,9 +255,17 @@ public class Family extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume(){
+        super.onResume();
+
+        listenToServer();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
 
         listenThread.interrupt();
     }
+
 }

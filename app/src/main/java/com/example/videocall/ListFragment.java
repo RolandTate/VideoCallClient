@@ -124,8 +124,6 @@ public class ListFragment extends Fragment {
 
     void StartVideoCall(String memberId){
         final String ID = memberId;
-        Family.threadActive = false;
-        Family.listenThread.interrupt();
         new Thread(new Runnable() {
             @Override
             public void run() {
