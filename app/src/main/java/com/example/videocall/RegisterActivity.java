@@ -16,6 +16,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -23,8 +25,10 @@ import java.net.SocketAddress;
 
 public class RegisterActivity extends AppCompatActivity {
     Socket socket;
-    OutputStream outputStream;
-    BufferedReader in;
+    ObjectOutputStream objectOutputStream;
+    ObjectInputStream objectInputStream;
+    //OutputStream outputStream;
+    //BufferedReader in;
     private Toast toast;
 
     EditText createUserID;
@@ -79,9 +83,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     void Register(){
-        userID = createUserID.getText().toString() + "\n";
-        password = createPassword.getText().toString() + "\n";
-        userName = createUsername.getText().toString() + "\n";
+        userID = createUserID.getText().toString();
+        password = createPassword.getText().toString();
+        userName = createUsername.getText().toString();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -111,12 +115,13 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void connect() throws Exception{
-        //SocketAddress socAddress = new InetSocketAddress("192.168.168.102", 8923);
-        SocketAddress socAddress = new InetSocketAddress("118.31.54.155", 8923);
+        SocketAddress socAddress = new InetSocketAddress("192.168.168.100", 8923);
+        //SocketAddress socAddress = new InetSocketAddress("118.31.54.155", 8923);
         socket.connect(socAddress, 1000);
 
-        outputStream = socket.getOutputStream();
-        outputStream.write(registerRequestMsg.getBytes());
+        objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        objectInputStream = new ObjectInputStream(socket.getInputStream());
+        objectOutputStream.writeObject("registerRequest");
         System.out.println("已向注册服务器发送注册请求预备："+registerRequestMsg);
     }
 
@@ -127,18 +132,17 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void sendRegisterMsg() throws Exception{
-        outputStream.write(registerMsg.getBytes());
+        objectOutputStream.writeObject("register");
         System.out.println("已向注册服务器发送注册请求："+registerMsg);
-        outputStream.write(userID.getBytes());
-        outputStream.write(password.getBytes());
-        outputStream.write(userName.getBytes());
+        objectOutputStream.writeObject(userID);
+        objectOutputStream.writeObject(password);
+        objectOutputStream.writeObject(userName);
         System.out.println("已向注册服务器发送注册信息");
 
     }
 
     private void readRegisterMsg() throws Exception{
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        String result = in.readLine();
+        String result = (String) objectInputStream.readObject();
 
         if(result.equals("success")){
             Message msg = new Message();
@@ -180,10 +184,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void close(){
         try{
-            if (outputStream != null)
-                outputStream.close();
-            if (in != null)
-                in.close();
+            if (objectOutputStream != null)
+                objectOutputStream.close();
+            if (objectInputStream != null)
+                objectInputStream.close();
             if (socket != null)
                 socket.close();
             System.out.println("输入输出流以及socket全部关闭");

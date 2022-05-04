@@ -143,8 +143,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void connect() throws Exception{
-        //SocketAddress socAddress = new InetSocketAddress("192.168.168.102", 8923);
-        SocketAddress socAddress = new InetSocketAddress("118.31.54.155", 8923);
+        SocketAddress socAddress = new InetSocketAddress("192.168.168.100", 8923);
+        //SocketAddress socAddress = new InetSocketAddress("118.31.54.155", 8923);
         socket.connect(socAddress, 1000);
 
         //outputStream = socket.getOutputStream();
