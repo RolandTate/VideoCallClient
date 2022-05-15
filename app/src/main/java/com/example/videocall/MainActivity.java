@@ -336,15 +336,15 @@ public class MainActivity extends AppCompatActivity {
     private void leaveChannel() {
         mRtcEngine.leaveChannel();
         appTool = (ApplicationTool)MainActivity.this.getApplication();
-        socket = appTool.getSocket();
+        //socket = appTool.getSocket();
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    ObjectOutputStream objectOutputStream = appTool.getObjectOutputStream();
-                    objectOutputStream.writeObject("EndVideo");
+                    appTool.getObjectOutputStream();
+                    appTool.getObjectOutputStream().writeObject("EndVideo");
 
-                    objectOutputStream.writeObject("EndCall");
+                    appTool.getObjectOutputStream().writeObject("EndCall");
                     System.out.println("结束通话");
                     startActivity(new Intent(MainActivity.this,Family.class));
                 }catch (Exception e){
