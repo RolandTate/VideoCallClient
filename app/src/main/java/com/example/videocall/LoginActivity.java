@@ -197,6 +197,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginSuccess(){
         System.out.println("登录密码验证成功");
+        Tip("密码正确，登录成功!", Toast.LENGTH_SHORT);
         ApplicationTool appTool = (ApplicationTool) LoginActivity.this.getApplication();
         appTool.setSocket(socket);
         appTool.setObjectOutputStream(objectOutputStream);

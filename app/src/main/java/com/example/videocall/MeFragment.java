@@ -37,6 +37,7 @@ public class MeFragment extends Fragment {
 
     Button logout;
     TextView currentUsername;
+    Toast toast;
 
     public MeFragment() {
         // Required empty public constructor
@@ -50,6 +51,7 @@ public class MeFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        toast = Toast.makeText(getActivity(),"",Toast.LENGTH_SHORT);
         super.onActivityCreated(savedInstanceState);
 
         Init();
@@ -80,6 +82,7 @@ public class MeFragment extends Fragment {
                     Family.threadActive = false;
                     sendEndConnectionMsg();
                     socket.close();
+                    Tip("退出成功！",Toast.LENGTH_SHORT);
                     startActivity(new Intent(getActivity(),LoginActivity.class));
                 }catch (Exception e){
                     e.printStackTrace();
@@ -93,5 +96,11 @@ public class MeFragment extends Fragment {
         //OutputStream outputStream = socket.getOutputStream();
         //outputStream.write("EndConnection".getBytes());
         objectOutputStream.writeObject("EndConnection");
+    }
+
+    public void Tip(String str, int showTime) {
+        toast.setText(str);
+        toast.setDuration(showTime);
+        toast.show();
     }
 }
