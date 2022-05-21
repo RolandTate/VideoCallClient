@@ -37,6 +37,7 @@ public class ListFragment extends Fragment {
     SimpleAdapter adapter;//将数据源的数据显示到列表的adapter
     ApplicationTool appTool;
     Socket socket;
+    Toast toast;
 
     //键值对保存相应设备信息
 
@@ -54,6 +55,7 @@ public class ListFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        toast = Toast.makeText(getActivity(),"",Toast.LENGTH_SHORT);
         super.onActivityCreated(savedInstanceState);
 
         Init();//初始化
@@ -112,8 +114,10 @@ public class ListFragment extends Fragment {
                     public void onClick(View v) {
                         if(memberState.equals("online"))
                             StartVideoCall(memberId );
-                        else
+                        else {
                             System.out.println(memberName + " 离线，无法拨通");
+                            Tip("离线，无法拨通！",Toast.LENGTH_SHORT);
+                        }
                     }
                 });
                 return super.getView(position, convertView, parent);
@@ -141,4 +145,9 @@ public class ListFragment extends Fragment {
 
     }
 
+    public void Tip(String str, int showTime) {
+        toast.setText(str);
+        toast.setDuration(showTime);
+        toast.show();
+    }
 }

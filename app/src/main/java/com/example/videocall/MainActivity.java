@@ -346,6 +346,7 @@ public class MainActivity extends AppCompatActivity {
 
                     appTool.getObjectOutputStream().writeObject("EndCall");
                     System.out.println("结束通话");
+                    Tip("结束通话！",Toast.LENGTH_SHORT);
                     startActivity(new Intent(MainActivity.this,Family.class));
                 }catch (Exception e){
                     e.printStackTrace();
@@ -354,4 +355,5 @@ public class MainActivity extends AppCompatActivity {
         }).start();
 
     }
+
 }
